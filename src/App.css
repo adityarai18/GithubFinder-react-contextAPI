@@ -412,3 +412,7 @@ table th {
     justify-content: center;
   }
 }
+
+.underline {
+  border-bottom: 3px #333 solid;
+}
