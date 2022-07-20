@@ -1,14 +1,14 @@
 import React, { useReducer } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import GithubContext from './githubContext';
 import GithubReducer from './githubReducer';
-import {
-  SEARCH_USERS,
-  SET_LOADING,
-  CLEAR_USERS,
-  GET_USER,
-  GET_REPOS,
-} from '../types';
+// import {
+//   SEARCH_USERS,
+//   SET_LOADING,
+//   CLEAR_USERS,
+//   GET_USER,
+//   GET_REPOS,
+// } from '../types';
 
 const GithubState = (props) => {
   const initialState = {
@@ -20,15 +20,53 @@ const GithubState = (props) => {
 
   const [state, dispatch] = useReducer(GithubReducer, initialState);
 
-  // Search Users
+  // const github = axios.create({
+  //   baseURL: 'https://api.github.com',
+  //   headers: { Authorization: `${process.env.REACT_APP_GITHUB_TOKEN}` },
+  // });
 
-  // Get User
+  // // Search Users
+  // const searchUsers = async (text) => {
+  //   setLoading();
 
-  // Get Repos
+  //   const res = await github.get(`/search/users?q=${text}`);
 
-  // Clear users
+  //   dispatch({
+  //     type: SEARCH_USERS,
+  //     payload: res.data.items,
+  //   });
+  // };
 
-  // Set Loading
+  // // Get User
+  // const getUser = async (username) => {
+  //   setLoading();
+
+  //   const res = await github.get(`/users/${username}`);
+
+  //   dispatch({
+  //     type: GET_USER,
+  //     payload: res.data,
+  //   });
+  // };
+
+  // // Get Repos
+  // const getUserRepos = async (username) => {
+  //   setLoading();
+
+  //   const res = await github.get(
+  //     `/users/${username}/repos?per_page=10&sort=created:asc`
+  //   );
+
+  //   dispatch({ type: GET_REPOS, payload: res.data });
+  // };
+
+  // // Clear users
+  // const clearUsers = () => {
+  //   dispatch({ type: CLEAR_USERS });
+  // };
+
+  // // Set Loading
+  // const setLoading = () => dispatch({ type: SET_LOADING });
 
   return (
     <GithubContext.Provider
@@ -37,6 +75,7 @@ const GithubState = (props) => {
         user: state.user,
         repos: state.repos,
         loading: state.loading,
+        dispatch,
       }}
     >
       {props.children}

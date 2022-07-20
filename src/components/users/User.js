@@ -1,11 +1,13 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Spinner from '../layout/Spinner';
+import GithubContext from '../../context/github/githubContext';
 import Repos from '../repos/Repos';
-import PropTypes from 'prop-types';
+import { getUserAndRepos } from '../../context/github/action';
+import { GET_USER_AND_REPOS, SET_LOADING } from '../../context/types';
 
-const User = (props) => {
-  const { getUser, repos, getUserRepos, loading, user } = props;
+const User = () => {
+  const { loading, user, dispatch } = useContext(GithubContext);
   const {
     name,
     avatar_url,
@@ -21,12 +23,15 @@ const User = (props) => {
     public_gists,
     hireable,
   } = user;
+
   const { userName } = useParams();
 
   useEffect(() => {
-    getUser(userName);
-    getUserRepos(userName);
-  }, [getUser, getUserRepos, userName]);
+    dispatch({ type: SET_LOADING });
+    getUserAndRepos(userName).then((res) => {
+      dispatch({ type: GET_USER_AND_REPOS, payload: res });
+    });
+  }, [dispatch, userName]);
 
   if (loading) {
     return <Spinner />;
@@ -90,25 +95,17 @@ const User = (props) => {
         </div>
       </div>
       <div className='card text-center'>
-        <div className='badge badge-primary'>Followers:{followers}</div>
-        <div className='badge badge-success'>Following:{following}</div>
-        <div className='badge badge-light'>Public Repos:{public_repos}</div>
-        <div className='badge badge-dark'>Public Gists:{public_gists}</div>
+        <div className='badge badge-primary'>Followers : {followers}</div>
+        <div className='badge badge-success'>Following : {following}</div>
+        <div className='badge badge-light'>Public Repos : {public_repos}</div>
+        <div className='badge badge-dark'>Public Gists : {public_gists}</div>
       </div>
       <p className='my-2' style={{ padding: '0px 2rem' }}>
         <strong>Repositories:</strong>
       </p>
-      <Repos repos={repos} />
+      <Repos />
     </Fragment>
   );
-};
-
-User.propTypes = {
-  getUser: PropTypes.func.isRequired,
-  repos: PropTypes.array.isRequired,
-  getUserRepos: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  user: PropTypes.object.isRequired,
 };
 
 export default User;
