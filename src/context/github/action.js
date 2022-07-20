@@ -1,8 +1,16 @@
 import axios from 'axios';
 
+let githubToken;
+
+if (process.env.NODE_ENV !== 'production') {
+  githubToken = process.env.REACT_APP_GITHUB_TOKEN;
+} else {
+  githubToken = process.env.GITHUB_TOKEN;
+}
+
 const github = axios.create({
   baseURL: 'https://api.github.com',
-  headers: { Authorization: `${process.env.REACT_APP_GITHUB_TOKEN}` },
+  headers: { Authorization: `${githubToken}` },
 });
 
 // Search Users
